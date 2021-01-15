@@ -1,0 +1,37 @@
+<form [formGroup]="investmentFormGroup">
+  <mat-form-field appearance="fill">
+    <mat-label>Period in months</mat-label>
+    <input matInput [(ngModel)]="period" min=1 formControlName="period">
+    <mat-icon matSuffix>calendar_today</mat-icon>
+    <mat-hint>Period of investing</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Start sum</mat-label>
+    <input matInput [(ngModel)]="startSum" min=0 formControlName="startSum">
+    <mat-icon matSuffix>money</mat-icon>
+    <mat-hint>Sum starting with</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Monthly added sum</mat-label>
+    <input matInput [(ngModel)]="monthlyAddSum" formControlName="monthlyAddSum">
+    <mat-icon matSuffix>money</mat-icon>
+    <mat-hint>Sum being invested each month</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Monthly rate</mat-label>
+    <input matInput [(ngModel)]="monthlyRate" min=0 formControlName="monthlyRate">
+    <mat-icon matSuffix>%</mat-icon>
+    <mat-hint>Per year: {{ yearlyRate }}%</mat-hint>
+  </mat-form-field>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>attach_money</mat-icon> Total income
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ totalIncome }}</p>
+    </mat-card-content>
+  </mat-card>
+</form>
