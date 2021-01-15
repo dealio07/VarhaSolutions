@@ -23,6 +23,21 @@ export class InvestmentComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.investmentFormGroup.get("monthlyRate").valueChanges.subscribe(value => {
+      this.yearlyRate = value * 12;
+    });
+    this.investmentFormGroup.get(["period", "startSum", "monthlyAddSum", "monthlyRate"]).valueChanges.subscribe(value => {
+      this.yearlyRate = value * 12;
+      for (let i = 0; i < this.period; i++) {
+        if (i == 0)
+        {
+          this.totalIncome += this.monthlyAddSum;
+          continue;
+        }
+
+        this.totalIncome += this.totalIncome * this.monthlyRate + this.monthlyAddSum;
+      }
+    });
   }
 
 }
