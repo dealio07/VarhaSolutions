@@ -1,0 +1,24 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: center;
+  max-width: 300px;
+}
+
+.mat-card {
+  width: 100%;
+}
+
+.form-delete-button {
+  text-align: left;
+  width: 85%;
+}
+
+.delete-button {
+  color: darkred;
+  position: fixed;
+  margin-left: 183px;
+  margin-top: -16px;
+  z-index: 2;
+}

@@ -1,0 +1,38 @@
+<form [formGroup]="investmentFormGroup" class="form">
+  <div class="form-delete-button">
+    <button mat-icon-button class="delete-button" (click)="remove()">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>Period</mat-label>
+    <input matInput min=1 formControlName="period">
+    <mat-hint>Period in months</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Start sum</mat-label>
+    <input matInput min=0 formControlName="startSum">
+    <mat-hint>Sum starting with</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Monthly added sum</mat-label>
+    <input matInput formControlName="monthlyAddSum">
+    <mat-hint>Sum invested each month</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Monthly rate (%)</mat-label>
+    <input matInput min=0 formControlName="monthlyRate">
+    <mat-hint>Per year: {{ yearlyRate }}%</mat-hint>
+  </mat-form-field>
+
+  <mat-card class="mat-card">
+    <mat-card-header>
+      <mat-card-title>
+        Total income
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ totalIncome | currency:'USD':'symbol-narrow' }}</p>
+    </mat-card-content>
+  </mat-card>
+</form>

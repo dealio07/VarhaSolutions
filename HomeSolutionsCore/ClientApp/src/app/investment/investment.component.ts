@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {InvestmentCounterComponent} from "../investment-counter/investment-counter.component";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-investment',
@@ -7,37 +8,25 @@ import {FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./investment.component.css']
 })
 export class InvestmentComponent implements OnInit {
-  public investmentFormGroup = new FormGroup({
-    period: new FormControl(1),
-    startSum: new FormControl(0),
-    monthlyAddSum: new FormControl(0),
-    monthlyRate: new FormControl(0.00)
-  });
-  public period: number = 1;
-  public startSum: number = 0;
-  public monthlyAddSum: number = 0;
-  public monthlyRate: number = 0.00;
-  public yearlyRate: number = this.monthlyRate * 12;
-  public totalIncome: number;
+  public investmentCounterComponents: {id: number, component: InvestmentCounterComponent}[] = [];
 
-  constructor() { }
+  constructor() {
+    this.addCounter();
+  }
 
-  ngOnInit() {
-    this.investmentFormGroup.get("monthlyRate").valueChanges.subscribe(value => {
-      this.yearlyRate = value * 12;
-    });
-    this.investmentFormGroup.get(["period", "startSum", "monthlyAddSum", "monthlyRate"]).valueChanges.subscribe(value => {
-      this.yearlyRate = value * 12;
-      for (let i = 0; i < this.period; i++) {
-        if (i == 0)
-        {
-          this.totalIncome += this.monthlyAddSum;
-          continue;
-        }
+  ngOnInit() {}
 
-        this.totalIncome += this.totalIncome * this.monthlyRate + this.monthlyAddSum;
-      }
-    });
+  public addCounter() {
+    this.investmentCounterComponents.push(this.createCounter());
+  }
+
+  private createCounter(): {id: number, component: InvestmentCounterComponent} {
+    return {id: this.investmentCounterComponents.length, component: new InvestmentCounterComponent(new FormBuilder())};
+  }
+
+  public removeCounter(counterId: number) {
+    this.investmentCounterComponents = this.investmentCounterComponents.filter(c => c.id !== counterId);
+    this.investmentCounterComponents.forEach(c => c.id = this.investmentCounterComponents.indexOf(c));
   }
 
 }
