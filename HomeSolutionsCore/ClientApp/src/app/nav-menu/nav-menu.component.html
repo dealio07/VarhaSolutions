@@ -3,7 +3,7 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">HomeSolutionsCore</a>
+      <a class="navbar-brand" [routerLink]="['/']">Home Solutions</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -25,22 +25,10 @@
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            <a mat-button class="nav-link text-dark" [routerLink]="['/']"><mat-icon>home</mat-icon></a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/investment']"
-              >Investment</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
+            <a mat-button class="nav-link text-dark" [routerLink]="['/investment']">Investment</a>
           </li>
         </ul>
       </div>

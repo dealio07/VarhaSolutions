@@ -5,24 +5,27 @@
     </button>
   </div>
   <mat-form-field appearance="outline">
-    <mat-label>Period</mat-label>
+    <mat-label>Period (months)</mat-label>
     <input matInput min=1 formControlName="period">
-    <mat-hint>Period in months</mat-hint>
+    <mat-hint>
+      <span *ngIf="period >= 12">{{ Math.floor(period / 12) | number }} year(s)</span>
+      <span *ngIf="period % 12 !== 0"> {{ period < 12 ? period : (period % 12) | number:'1.0-0' }} months</span>
+    </mat-hint>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Start sum</mat-label>
+    <mat-label>Starting sum</mat-label>
     <input matInput min=0 formControlName="startSum">
-    <mat-hint>Sum starting with</mat-hint>
+<!--    <mat-hint>Sum starting with</mat-hint>-->
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Monthly added sum</mat-label>
     <input matInput formControlName="monthlyAddSum">
-    <mat-hint>Sum invested each month</mat-hint>
+    <mat-hint>For all period: {{ +period * +monthlyAddSum | number:'1.1-2' }}</mat-hint>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Monthly rate (%)</mat-label>
     <input matInput min=0 formControlName="monthlyRate">
-    <mat-hint>Per year: {{ yearlyRate }}%</mat-hint>
+    <mat-hint>Per year: {{ yearlyRate | number:'1.1-2' }}%</mat-hint>
   </mat-form-field>
 
   <mat-card class="mat-card">

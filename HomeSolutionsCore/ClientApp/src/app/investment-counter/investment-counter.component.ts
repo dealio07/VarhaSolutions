@@ -9,12 +9,14 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 export class InvestmentCounterComponent implements OnInit {
   @Input("id") public id: number;
   public investmentFormGroup: FormGroup;
-  public period: number = 1;
-  public startSum: number = 0;
-  public monthlyAddSum: number = 0;
-  public monthlyRate: number = 0.00;
-  public yearlyRate: number = 0;
-  public totalIncome: number = 0.00;
+  public period: number;
+  public startSum: number;
+  public monthlyAddSum: number;
+  public monthlyRate: number;
+  public yearlyRate: number;
+  public totalIncome: number;
+
+  public Math = Math;
 
   @Output() removeCounter = new EventEmitter<number>(true);
 
@@ -66,16 +68,14 @@ export class InvestmentCounterComponent implements OnInit {
   }
 
   public updateTotalIncome() {
-    this.totalIncome = +this.startSum;
     this.yearlyRate = +this.monthlyRate * 12;
-    for (let i = 0; i < +this.period; i++) {
-      if (i == 0) {
-        this.totalIncome += +this.monthlyAddSum;
-        continue;
-      }
 
-      this.totalIncome += +this.totalIncome * (+this.monthlyRate / 100.00) + +this.monthlyAddSum;
-    }
+    // https://mobile-testing.ru/slozhnyy_protsent_popolnenie/
+    let i = (this.monthlyRate * 12) / 100.00;
+    let m = 12;
+    let n = this.period / 12;
+    let timePercent = Math.pow((1 + i / m), m * n);
+    this.totalIncome = this.monthlyAddSum * (timePercent - 1) * (m / i) + this.startSum * timePercent;
   }
 
   public remove() {
