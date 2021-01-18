@@ -1,10 +1,10 @@
-<h3>Count your investment income</h3>
+<h3>Count investment income</h3>
 
 <div class="counters">
   <span *ngFor="let counter of investmentCounterComponents" class="margin-l-5 margin-r-5 margin-b-5">
     <app-investment-counter (removeCounter)="removeCounter($event)" [id]="counter.id"></app-investment-counter>
   </span>
-  <button mat-raised-button class="margin-t-5 margin-l-25" (click)="addCounter()">
+  <button mat-raised-button class="margin-t-35 margin-l-25" (click)="addCounter()">
     <mat-icon>add</mat-icon>
   </button>
 </div>

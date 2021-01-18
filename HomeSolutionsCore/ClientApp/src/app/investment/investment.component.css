@@ -4,10 +4,16 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .margin-l-25 {
   margin-left: 25px;
+}
+
+.margin-t-35 {
+  margin-top: 35px;
 }
 
 .margin-l-5 {
