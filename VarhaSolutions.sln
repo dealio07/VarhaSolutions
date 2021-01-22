@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeSolutionsCore", "HomeSolutionsCore\HomeSolutionsCore.csproj", "{9D0DEC45-516E-4ADB-B6CE-9AA327A004C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VarhaSolutionsCore", "VarhaSolutionsCore\VarhaSolutionsCore.csproj", "{9D0DEC45-516E-4ADB-B6CE-9AA327A004C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

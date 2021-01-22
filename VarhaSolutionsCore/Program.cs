@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace HomeSolutionsCore
+namespace VarhaSolutionsCore
 {
     public class Program
     {
