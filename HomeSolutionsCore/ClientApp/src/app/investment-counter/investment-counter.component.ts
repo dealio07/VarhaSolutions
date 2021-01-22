@@ -13,7 +13,7 @@ export class InvestmentCounterComponent implements OnInit {
   public startSum: number;
   public monthlyAddSum: number;
   public monthlyRate: number;
-  public yearlyRate: number;
+  public annualRate: number;
   public totalIncome: number;
 
   public Math = Math;
@@ -25,7 +25,7 @@ export class InvestmentCounterComponent implements OnInit {
       "period": formBuilder.control(this.period),
       "startSum": formBuilder.control(this.startSum),
       "monthlyAddSum": formBuilder.control(this.monthlyAddSum),
-      "monthlyRate": formBuilder.control(this.monthlyRate),
+      "annualRate": formBuilder.control(this.annualRate),
     });
   }
 
@@ -48,30 +48,30 @@ export class InvestmentCounterComponent implements OnInit {
         this.updateTotalIncome();
       });
     }
-    if (!!this.investmentFormGroup.get("monthlyRate")) {
-      this.investmentFormGroup.get("monthlyRate").valueChanges.subscribe((value: number) => {
+    if (!!this.investmentFormGroup.get("annualRate")) {
+      this.investmentFormGroup.get("annualRate").valueChanges.subscribe((value: number) => {
         this.updateValue(null, null, null, value);
         this.updateTotalIncome();
       });
     }
   }
 
-  public updateValue(period: number = null, startSum: number = null, monthlyAddSum: number = null, monthlyRate: number = null) {
+  public updateValue(period: number = null, startSum: number = null, monthlyAddSum: number = null, annualRate: number = null) {
     if (!!period)
       this.period = period;
     if (!!startSum)
       this.startSum = startSum;
     if (!!monthlyAddSum)
       this.monthlyAddSum = monthlyAddSum;
-    if (!!monthlyRate)
-      this.monthlyRate = monthlyRate;
+    if (!!annualRate)
+      this.annualRate = annualRate;
   }
 
   public updateTotalIncome() {
-    this.yearlyRate = +this.monthlyRate * 12;
+    this.monthlyRate = +this.annualRate / 12;
 
     // https://mobile-testing.ru/slozhnyy_protsent_popolnenie/
-    let i = (this.monthlyRate * 12) / 100.00;
+    let i = this.annualRate / 100.00;
     let m = 12;
     let n = this.period / 12;
     let timePercent = Math.pow((1 + i / m), m * n);
