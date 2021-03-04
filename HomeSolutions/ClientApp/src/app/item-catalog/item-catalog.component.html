@@ -1,0 +1,144 @@
+<h4>Items</h4>
+
+<!-- Fields for adding new Items -->
+<div class="addItemDiv">
+  <button mat-raised-button class="btn btn-info addItemActivateButton" (click)="toggleAddCard()">Add item</button>
+  <mat-card *ngIf="addCardIsActive">
+    <mat-form-field appearance="fill" class="itemNameInput margin-5">
+      <mat-label>Name:</mat-label>
+      <br/>
+      <input matInput [(ngModel)]="itemName" type="text">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="margin-5">
+      <mat-label>Type:</mat-label>
+      <br/>
+      <mat-select [(value)]="itemType">
+        <mat-option *ngFor="let itemType of itemTypeEnumValues" [value]=itemType.type>
+          {{itemType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="margin-5">
+      <mat-label>For:</mat-label>
+      <br/>
+      <mat-select [(value)]="itemUserType">
+        <mat-option *ngFor="let userType of userTypeEnumValues" [value]=userType.type>
+          {{userType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="margin-5">
+      <mat-label>Amount:</mat-label>
+      <br/>
+      <input matInput [(ngModel)]="itemTotalAmount" type="number" [min]="0">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="margin-5">
+      <mat-label>Price:</mat-label>
+      <br/>
+      <input matInput [(ngModel)]="itemPrice" type="number" [min]="0">
+    </mat-form-field>
+    <br/>
+    <button mat-raised-button class="btn btn-info addItemButton" (click)="addItem()">Add</button>
+  </mat-card>
+</div>
+
+<!-- Table with items -->
+<table mat-table [(dataSource)]="items" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let item">
+      <span *ngIf="!item.isEditing">{{ item.name }}</span>
+      <span *ngIf="item.isEditing">
+        <mat-form-field appearance="fill" class="itemNameInput margin-5">
+          <mat-label>Name:</mat-label>
+          <br/>
+          <input matInput [(ngModel)]="item.name" type="text">
+        </mat-form-field>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="amountTotal">
+    <th mat-header-cell *matHeaderCellDef>Initial amount</th>
+    <td mat-cell *matCellDef="let item">
+      <span *ngIf="!item.isEditing">{{item.amountTotal}}</span>
+      <span *ngIf="item.isEditing">
+        <mat-form-field appearance="fill" class="margin-5">
+          <input matInput [(ngModel)]="item.amountTotal" type="number" [min]="0">
+        </mat-form-field>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="amountLeft">
+    <th mat-header-cell *matHeaderCellDef>Amount left</th>
+    <td mat-cell *matCellDef="let item">
+      <span *ngIf="!item.isEditing">{{item.amountLeft}}</span>
+      <span *ngIf="item.isEditing">
+        <mat-form-field appearance="fill" class="margin-5">
+          <input matInput [(ngModel)]="item.amountLeft" type="number" [min]="0">
+        </mat-form-field>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="info">
+    <th mat-header-cell *matHeaderCellDef>Info</th>
+    <td mat-cell *matCellDef="let item">
+      <span *ngIf="!item.isEditing">{{getItemType(item.type)}} for {{getUserType(item.userType)}}</span>
+      <span *ngIf="item.isEditing">
+        <mat-form-field appearance="fill" class="margin-5">
+          <mat-label>Type:</mat-label>
+          <br/>
+          <mat-select [(value)]="item.type">
+            <mat-option *ngFor="let itemType of itemTypeEnumValues" [value]=itemType.type>
+              {{itemType.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="margin-5">
+          <mat-label>For:</mat-label>
+          <br/>
+          <mat-select [(value)]="item.userType">
+            <mat-option *ngFor="let userType of userTypeEnumValues" [value]=userType.type>
+              {{userType.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef>Price</th>
+    <td mat-cell *matCellDef="let item">
+      <span *ngIf="!item.isEditing">{{item.price | currency:'UAH':'symbol-narrow'}}</span>
+      <span *ngIf="item.isEditing">
+        <mat-form-field appearance="fill" class="margin-5">
+          <input matInput [(ngModel)]="item.price" type="number" [min]="0">
+        </mat-form-field>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="pricePerUnit">
+    <th mat-header-cell *matHeaderCellDef>Price per unit</th>
+    <td mat-cell *matCellDef="let item">
+      <span *ngIf="!item.isEditing">{{item.pricePerUnit | currency:'UAH':'symbol-narrow'}}</span>
+      <span *ngIf="item.isEditing">
+        <mat-form-field appearance="fill" class="margin-5">
+          <input matInput [(ngModel)]="item.pricePerUnit" type="number" [min]="0">
+        </mat-form-field>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let item">
+      <mat-icon class="mat-icon-button" type="button" aria-hidden="false" mat-raised-button color="primary"
+                (click)="updateItem(item)">edit
+      </mat-icon>
+      <mat-icon class="mat-icon-button" type="button" aria-hidden="false" mat-raised-button color="warn"
+                (click)="removeItem(item.id)">delete_outline
+      </mat-icon>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="itemTableColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: itemTableColumns;"></tr>
+</table>
