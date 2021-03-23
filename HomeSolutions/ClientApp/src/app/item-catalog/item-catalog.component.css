@@ -4,7 +4,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 }
 
 th.mat-header-cell {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 table {

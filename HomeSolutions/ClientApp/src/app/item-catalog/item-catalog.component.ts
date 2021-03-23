@@ -10,6 +10,7 @@ import { MatTableDataSource, MatTable } from '@angular/material/table';
 export class ItemCatalogComponent implements OnInit {
   public http: HttpClient;
   public baseUrl: string;
+  public baseUrlItems = 'items';
   public items = new MatTableDataSource<Item>();
   public itemTableColumns = ["name", "amountTotal", "amountLeft", "info", "price", "pricePerUnit", "actions"];
   public addCardIsActive: boolean;
@@ -56,7 +57,7 @@ export class ItemCatalogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get<Item[]>(this.baseUrl + 'items').subscribe((result: Item[]) => {
+    this.http.get<Item[]>(`${this.baseUrl}${this.baseUrlItems}`).subscribe((result: Item[]) => {
       this.items.data = result;
     }, error => console.error(error));
   }
@@ -81,7 +82,7 @@ export class ItemCatalogComponent implements OnInit {
       amountTotal: +this.itemTotalAmount,
       price: +this.itemPrice
     };
-    this.http.post(this.baseUrl + 'items', item).subscribe((result: Item) => {
+    this.http.post(`${this.baseUrl}${this.baseUrlItems}/create`, item).subscribe((result: Item) => {
       this.items.data.push(result);
       this.table.renderRows();
       this.toggleAddCard();
@@ -94,7 +95,7 @@ export class ItemCatalogComponent implements OnInit {
       return;
     }
 
-    this.http.put(this.baseUrl + `items/${item.id}`, item).subscribe((result: Item) => {
+    this.http.post(`${this.baseUrl}${this.baseUrlItems}/update/${item.id}`, item).subscribe((result: Item) => {
       let oldItemIndex = this.items.data.indexOf(item);
       item.isEditing = false;
       this.items.data[oldItemIndex] = result;
@@ -103,7 +104,7 @@ export class ItemCatalogComponent implements OnInit {
   }
 
   removeItem(itemId: string) {
-    this.http.delete(this.baseUrl + `items/${itemId}`).subscribe((result: Item) => {
+    this.http.post(`${this.baseUrl}${this.baseUrlItems}/delete/${itemId}`, null).subscribe((result: Item) => {
       this.items.data = this.items.data.filter(p => p.id != itemId);
     }, error => console.error(error));
   }
@@ -134,6 +135,8 @@ interface Item {
   amountLeft?: number,
   price?: number,
   pricePerUnit?: number,
+  created?: Date,
+  updated?: Date,
   isEditing?: boolean,
 }
 

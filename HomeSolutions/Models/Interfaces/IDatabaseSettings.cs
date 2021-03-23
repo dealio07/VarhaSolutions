@@ -1,8 +1,7 @@
 ﻿namespace HomeSolutions.Models.Interfaces
 {
-    public interface IItemDatabaseSettings
+    public interface IDatabaseSettings
     {
-        string ItemCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }
