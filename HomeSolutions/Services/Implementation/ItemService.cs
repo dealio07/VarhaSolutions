@@ -1,28 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using HomeSolutions.Models;
-using HomeSolutions.Models.Interfaces;
+using HomeSolutions.Providers.Abstraction;
+using HomeSolutions.Services.Abstraction;
 using MongoDB.Driver;
 
-namespace HomeSolutions.Services
+namespace HomeSolutions.Services.Implementation
 {
-    public class ItemService
+    public class ItemService: IItemService
     {
         private readonly IMongoCollection<Item> _items;
 
-        public ItemService(IItemDatabaseSettings dbSettings)
+        public ItemService(IMongoDbClientProvider mongoDbClientProvider)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
-            var database = client.GetDatabase(dbSettings.DatabaseName);
-
-            _items = database.GetCollection<Item>(dbSettings.ItemCollectionName);
+            _items = mongoDbClientProvider.GetCollection<Item>("Items");
         }
 
         public List<Item> Get() =>
-            _items.Find(i => true).ToList();
+            _items.Find(i => true).SortByDescending(i => i.Created).ToList();
 
         public Item Get(string id) =>
-            _items.Find<Item>(i => i.Id == id).FirstOrDefault();
+            _items.Find(i => i.Id == id).FirstOrDefault();
 
         public Item Create(Item item)
         {
@@ -33,6 +31,8 @@ namespace HomeSolutions.Services
 
             item.AmountLeft = item.AmountTotal;
             item.PricePerUnit = GetPricePerUnit(item);
+            item.Created = DateTime.Now;
+            item.Updated = DateTime.Now;
             _items.InsertOne(item);
             return item;
         }
@@ -44,6 +44,7 @@ namespace HomeSolutions.Services
                 throw new Exception("Product's amount should greater than 0");
 
             item.PricePerUnit = GetPricePerUnit(item);
+            item.Updated = DateTime.Now;
             _items.ReplaceOne(i => i.Id == id, item);
             return item;
         }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using HomeSolutions.Models;
-using HomeSolutions.Services;
+using HomeSolutions.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeSolutions.Controllers
@@ -9,9 +9,9 @@ namespace HomeSolutions.Controllers
     [Route("[controller]")]
     public class ItemsController : ControllerBase
     {
-        private readonly ItemService _itemService;
+        private readonly IItemService _itemService;
 
-        public ItemsController(ItemService itemService)
+        public ItemsController(IItemService itemService)
         {
             _itemService = itemService;
         }
@@ -33,13 +33,13 @@ namespace HomeSolutions.Controllers
             return Ok(item);
         }
         
-        [HttpPost]
+        [HttpPost("create")]
         public ActionResult<Item> Create(Item item)
         {
             return Ok(_itemService.Create(item));
         }
 
-        [HttpPut("{id:length(24)}")]
+        [HttpPost("update/{id:length(24)}")]
         public IActionResult Update(string id, Item itemIn)
         {
             var item = _itemService.Get(id);
@@ -52,7 +52,7 @@ namespace HomeSolutions.Controllers
             return Ok(_itemService.Update(id, itemIn));
         }
 
-        [HttpDelete("{id:length(24)}")]
+        [HttpPost("delete/{id:length(24)}")]
         public IActionResult Delete(string id)
         {
             var item = _itemService.Get(id);

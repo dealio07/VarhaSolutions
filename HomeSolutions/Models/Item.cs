@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace HomeSolutions.Models
@@ -29,5 +30,11 @@ namespace HomeSolutions.Models
 
          [BsonRepresentation(BsonType.Decimal128)]
          public decimal? PricePerUnit { get; set; }
+
+         [BsonRepresentation(BsonType.DateTime)]
+         public DateTime? Created { get; set; }
+
+         [BsonRepresentation(BsonType.DateTime)]
+         public DateTime? Updated { get; set; }
     }
 }

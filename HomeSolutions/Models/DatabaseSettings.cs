@@ -2,9 +2,8 @@
 
 namespace HomeSolutions.Models
 {
-    public class ItemDatabaseSettings: IItemDatabaseSettings
+    public class DatabaseSettings: IDatabaseSettings
     {
-        public string ItemCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

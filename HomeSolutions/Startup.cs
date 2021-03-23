@@ -1,6 +1,11 @@
 using HomeSolutions.Models;
 using HomeSolutions.Models.Interfaces;
+using HomeSolutions.Providers;
+using HomeSolutions.Providers.Abstraction;
+using HomeSolutions.Providers.Implementation;
 using HomeSolutions.Services;
+using HomeSolutions.Services.Abstraction;
+using HomeSolutions.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -23,11 +28,12 @@ namespace HomeSolutions
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<ItemDatabaseSettings>(Configuration.GetSection(nameof(ItemDatabaseSettings)));
+            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
 
-            services.AddSingleton<IItemDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<ItemDatabaseSettings>>().Value);
-            services.AddSingleton<ItemService>();
+            services.AddSingleton<IDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddTransient<IMongoDbClientProvider, MongoDbClientProvider>();
+            services.AddScoped<IItemService, ItemService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
