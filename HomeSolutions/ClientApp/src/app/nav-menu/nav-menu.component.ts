@@ -9,11 +9,6 @@ export class NavMenuComponent {
   isExpanded = false;
   public routes: Route[] = [
     {
-      name: 'Home',
-      link: '/',
-      exact: true,
-    },
-    {
       name: 'Investment',
       link: '/investment',
     },
