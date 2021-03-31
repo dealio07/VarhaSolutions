@@ -6,7 +6,6 @@ import {RouterModule} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {NavMenuComponent} from './nav-menu/nav-menu.component';
-import {HomeComponent} from './home/home.component';
 import {InvestmentComponent} from "./investment/investment.component";
 import {InvestmentCounterComponent} from "./investment-counter/investment-counter.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -23,7 +22,7 @@ import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {ItemCatalogComponent} from './item-catalog/item-catalog.component';
 
 let rootRoutes = [
-  {path: '', component: HomeComponent, pathMatch: 'full'},
+  {path: '', component: InvestmentComponent, pathMatch: 'full'},
   {path: 'investment', component: InvestmentComponent},
   {path: 'item-catalog', component: ItemCatalogComponent},
 ];
@@ -32,7 +31,6 @@ let rootRoutes = [
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     InvestmentComponent,
     InvestmentCounterComponent,
     ItemCatalogComponent,
