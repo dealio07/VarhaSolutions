@@ -1,9 +1,9 @@
-﻿namespace HomeSolutions.Models
+﻿namespace HomeSolutions.Models.Enums
 {
     public enum ItemTypeEnum
     {
-        FOOD,
-        CHEMICALS,
-        OTHER,
+        Food,
+        Chemicals,
+        Other,
     }
 }

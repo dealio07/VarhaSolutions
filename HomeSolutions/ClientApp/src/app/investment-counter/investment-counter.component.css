@@ -5,6 +5,7 @@
   text-align: center;
   max-width: 300px;
   margin: 20px;
+  font-size: 15px;
 }
 
 .mat-card {
@@ -22,4 +23,8 @@
   margin-left: 183px;
   margin-top: -16px;
   z-index: 2;
+}
+
+.mat-card-header .mat-card-title {
+  font-size: 15px;
 }

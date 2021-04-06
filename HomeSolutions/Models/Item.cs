@@ -1,4 +1,5 @@
 ﻿using System;
+using HomeSolutions.Models.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -15,6 +16,9 @@ namespace HomeSolutions.Models
 
          [BsonRepresentation(BsonType.String)]
          public ItemTypeEnum Type { get; set; }
+
+         [BsonRepresentation(BsonType.String)]
+         public UnitEnum Unit { get; set; }
 
          [BsonRepresentation(BsonType.String)]
          public ItemUserTypeEnum UserType { get; set; }

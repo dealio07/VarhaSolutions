@@ -31,8 +31,16 @@ mat-radio-button {
   margin-right: 5px;
 }
 
-.itemNameInput {
+.item-name {
+  width: 35%;
+}
+
+.item-name-input {
   width: 100%;
+}
+
+.item-field {
+  width: 10%;
 }
 
 .margin-l-25 {
@@ -61,4 +69,12 @@ mat-radio-button {
 
 .margin-5 {
   margin: 5px;
+}
+
+table ::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+  width: 100%;
+}
+
+table .mat-form-field {
+  width: 100%;
 }

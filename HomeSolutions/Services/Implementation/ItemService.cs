@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using HomeSolutions.Models;
 using HomeSolutions.Providers.Abstraction;
 using HomeSolutions.Services.Abstraction;
@@ -25,9 +26,9 @@ namespace HomeSolutions.Services.Implementation
         public Item Create(Item item)
         {
             if (string.IsNullOrWhiteSpace(item.Name))
-                throw new Exception("Product's name should not be empty");
+                throw new Exception("Item's name should not be empty");
             if (item.AmountTotal <= 0)
-                throw new Exception("Product's amount should greater than 0");
+                throw new Exception("Item's amount should be greater than 0");
 
             item.AmountLeft = item.AmountTotal;
             item.PricePerUnit = GetPricePerUnit(item);
@@ -39,9 +40,13 @@ namespace HomeSolutions.Services.Implementation
 
         public Item Update(string id, Item item) {
             if (string.IsNullOrWhiteSpace(item.Name))
-                throw new Exception("Product's name should not be empty");
+                throw new Exception("Item's name should not be empty");
             if (item.AmountTotal <= 0)
-                throw new Exception("Product's amount should greater than 0");
+                throw new Exception("Item's amount should be greater than 0");
+            if (item.AmountLeft > item.AmountTotal)
+                throw new Exception("Item's amount left should be greater than total amount");
+            if (item.AmountLeft < 0)
+                throw new Exception("Item's amount left couldn't be less than 0");
 
             item.PricePerUnit = GetPricePerUnit(item);
             item.Updated = DateTime.Now;
