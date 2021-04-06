@@ -1,9 +1,9 @@
-﻿namespace HomeSolutions.Models
+﻿namespace HomeSolutions.Models.Enums
 {
     public enum ItemUserTypeEnum
     {
-        HUMAN,
-        ANIMAL,
-        HOUSE,
+        Human,
+        Animal,
+        House,
     }
 }

@@ -4,7 +4,7 @@
 <div class="addItemDiv">
   <button mat-raised-button class="btn btn-info addItemActivateButton" (click)="toggleAddCard()">Add item</button>
   <mat-card *ngIf="addCardIsActive">
-    <mat-form-field appearance="fill" class="itemNameInput margin-5">
+    <mat-form-field appearance="fill" class="item-name-input margin-5">
       <mat-label>Name:</mat-label>
       <br/>
       <input matInput [(ngModel)]="itemName" type="text">
@@ -15,6 +15,15 @@
       <mat-select [(value)]="itemType">
         <mat-option *ngFor="let itemType of itemTypeEnumValues" [value]=itemType.type>
           {{itemType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="margin-5">
+      <mat-label>Unit:</mat-label>
+      <br/>
+      <mat-select [(value)]="itemUnit">
+        <mat-option *ngFor="let unit of unitEnumValues" [value]=unit.type>
+          {{unit.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -46,10 +55,10 @@
 <table mat-table [(dataSource)]="items" class="mat-elevation-z8">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let item">
-      <span *ngIf="!item.isEditing">{{ item.name }}</span>
+    <td mat-cell *matCellDef="let item" class="item-name">
+      <span *ngIf="!item.isEditing" [style.color]="item.amountLeft == 0 ? 'red' : ''">{{ item.name }}</span>
       <span *ngIf="item.isEditing">
-        <mat-form-field appearance="fill" class="itemNameInput margin-5">
+        <mat-form-field appearance="fill" class="item-name-input margin-5" #field>
           <mat-label>Name:</mat-label>
           <br/>
           <input matInput [(ngModel)]="item.name" type="text">
@@ -59,21 +68,34 @@
   </ng-container>
   <ng-container matColumnDef="amountTotal">
     <th mat-header-cell *matHeaderCellDef>Initial amount</th>
-    <td mat-cell *matCellDef="let item">
-      <span *ngIf="!item.isEditing">{{item.amountTotal}}</span>
+    <td mat-cell *matCellDef="let item" class="item-field">
+      <span *ngIf="!item.isEditing">{{item.amountTotal}} {{getUnit(item.unit)}}</span>
       <span *ngIf="item.isEditing">
-        <mat-form-field appearance="fill" class="margin-5">
+        <mat-form-field appearance="fill" class="margin-5" #field>
+          <mat-label>Total:</mat-label>
+          <br/>
           <input matInput [(ngModel)]="item.amountTotal" type="number" [min]="0">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="margin-5" #field>
+          <mat-label>Type:</mat-label>
+          <br/>
+          <mat-select [(value)]="item.unit">
+            <mat-option *ngFor="let unit of unitEnumValues" [value]=unit.type>
+              {{unit.name}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </span>
     </td>
   </ng-container>
   <ng-container matColumnDef="amountLeft">
     <th mat-header-cell *matHeaderCellDef>Amount left</th>
-    <td mat-cell *matCellDef="let item">
-      <span *ngIf="!item.isEditing">{{item.amountLeft}}</span>
+    <td mat-cell *matCellDef="let item" class="item-field">
+      <span *ngIf="!item.isEditing">{{item.amountLeft}} {{getUnit(item.unit)}}</span>
       <span *ngIf="item.isEditing">
-        <mat-form-field appearance="fill" class="margin-5">
+        <mat-form-field appearance="fill" class="margin-5" #field>
+          <mat-label>Left:</mat-label>
+          <br/>
           <input matInput [(ngModel)]="item.amountLeft" type="number" [min]="0">
         </mat-form-field>
       </span>
@@ -81,10 +103,10 @@
   </ng-container>
   <ng-container matColumnDef="info">
     <th mat-header-cell *matHeaderCellDef>Info</th>
-    <td mat-cell *matCellDef="let item">
+    <td mat-cell *matCellDef="let item" class="item-field">
       <span *ngIf="!item.isEditing">{{getItemType(item.type)}} for {{getUserType(item.userType)}}</span>
       <span *ngIf="item.isEditing">
-        <mat-form-field appearance="fill" class="margin-5">
+        <mat-form-field appearance="fill" class="margin-5" #field>
           <mat-label>Type:</mat-label>
           <br/>
           <mat-select [(value)]="item.type">
@@ -93,7 +115,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="margin-5">
+        <mat-form-field appearance="fill" class="margin-5" #field>
           <mat-label>For:</mat-label>
           <br/>
           <mat-select [(value)]="item.userType">
@@ -107,10 +129,12 @@
   </ng-container>
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef>Price</th>
-    <td mat-cell *matCellDef="let item">
+    <td mat-cell *matCellDef="let item" class="item-field">
       <span *ngIf="!item.isEditing">{{item.price | currency:'UAH':'symbol-narrow'}}</span>
       <span *ngIf="item.isEditing">
-        <mat-form-field appearance="fill" class="margin-5">
+        <mat-form-field appearance="fill" class="margin-5" #field>
+          <mat-label>Price:</mat-label>
+          <br/>
           <input matInput [(ngModel)]="item.price" type="number" [min]="0">
         </mat-form-field>
       </span>
@@ -118,10 +142,12 @@
   </ng-container>
   <ng-container matColumnDef="pricePerUnit">
     <th mat-header-cell *matHeaderCellDef>Price per unit</th>
-    <td mat-cell *matCellDef="let item">
+    <td mat-cell *matCellDef="let item" class="item-field">
       <span *ngIf="!item.isEditing">{{item.pricePerUnit | currency:'UAH':'symbol-narrow'}}</span>
       <span *ngIf="item.isEditing">
-        <mat-form-field appearance="fill" class="margin-5">
+        <mat-form-field appearance="fill" class="margin-5" #field>
+          <mat-label>Price/unit:</mat-label>
+          <br/>
           <input matInput [(ngModel)]="item.pricePerUnit" type="number" [min]="0">
         </mat-form-field>
       </span>

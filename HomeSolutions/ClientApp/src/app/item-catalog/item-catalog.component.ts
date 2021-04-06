@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, ElementRef} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
+import {MatFormField} from "@angular/material/form-field";
 
 @Component({
   selector: 'app-item-catalog',
@@ -16,35 +17,50 @@ export class ItemCatalogComponent implements OnInit {
   public addCardIsActive: boolean;
   public itemTypeEnumValues = [
     {
-      type: ItemTypeEnum.CHEMICALS,
+      type: ItemTypeEnum.Chemicals,
       name: 'Chemicals'
     },
     {
-      type: ItemTypeEnum.FOOD,
+      type: ItemTypeEnum.Food,
       name: 'Food'
     },
     {
-      type: ItemTypeEnum.OTHER,
+      type: ItemTypeEnum.Other,
       name: 'Other'
     },
   ];
   public userTypeEnumValues = [
     {
-      type: UserTypeEnum.ANIMAL,
+      type: UserTypeEnum.Animal,
       name: 'Animal'
     },
     {
-      type: UserTypeEnum.HOUSE,
+      type: UserTypeEnum.House,
       name: 'House'
     },
     {
-      type: UserTypeEnum.HUMAN,
+      type: UserTypeEnum.Human,
       name: 'Human'
+    },
+  ];
+  public unitEnumValues = [
+    {
+      type: UnitEnum.Item,
+      name: 'Item'
+    },
+    {
+      type: UnitEnum.Kilogram,
+      name: 'Kilogram'
+    },
+    {
+      type: UnitEnum.Liter,
+      name: 'Liter'
     },
   ];
 
   public itemName: string = "";
   public itemType: number = 0;
+  public itemUnit: number = 0;
   public itemUserType: number = 0;
   public itemTotalAmount: number = 0;
   public itemPrice: number = 0;
@@ -66,6 +82,7 @@ export class ItemCatalogComponent implements OnInit {
     this.addCardIsActive = !this.addCardIsActive;
     this.itemName = "";
     this.itemType = 0;
+    this.itemUnit = 0;
     this.itemUserType = 0;
     this.itemTotalAmount = 0;
     this.itemPrice = 0;
@@ -78,6 +95,7 @@ export class ItemCatalogComponent implements OnInit {
     let item: Item = {
       name: this.itemName,
       type: +this.itemType,
+      unit: +this.itemUnit,
       userType: +this.itemUserType,
       amountTotal: +this.itemTotalAmount,
       price: +this.itemPrice
@@ -111,17 +129,25 @@ export class ItemCatalogComponent implements OnInit {
 
   getItemType(type: ItemTypeEnum): string {
     switch (type) {
-      case ItemTypeEnum.FOOD: return "Food";
-      case ItemTypeEnum.CHEMICALS: return "Chemicals";
-      case ItemTypeEnum.OTHER: return "Other";
+      case ItemTypeEnum.Food: return "Food";
+      case ItemTypeEnum.Chemicals: return "Chemicals";
+      case ItemTypeEnum.Other: return "Other";
     }
   }
 
   getUserType(type: UserTypeEnum): string {
     switch (type) {
-      case UserTypeEnum.HUMAN: return "Human";
-      case UserTypeEnum.ANIMAL: return "Animal";
-      case UserTypeEnum.HOUSE: return "House";
+      case UserTypeEnum.Human: return "Human";
+      case UserTypeEnum.Animal: return "Animal";
+      case UserTypeEnum.House: return "House";
+    }
+  }
+
+  getUnit(type: UnitEnum): string {
+    switch (type) {
+      case UnitEnum.Item: return "";
+      case UnitEnum.Kilogram: return "kg";
+      case UnitEnum.Liter: return "l";
     }
   }
 }
@@ -130,6 +156,7 @@ interface Item {
   id?: string,
   name: string,
   type: ItemTypeEnum,
+  unit: UnitEnum,
   userType: UserTypeEnum,
   amountTotal: number,
   amountLeft?: number,
@@ -141,13 +168,19 @@ interface Item {
 }
 
 enum ItemTypeEnum {
-  FOOD,
-  CHEMICALS,
-  OTHER,
+  Food,
+  Chemicals,
+  Other,
 }
 
 enum UserTypeEnum {
-  HUMAN,
-  ANIMAL,
-  HOUSE,
+  Human,
+  Animal,
+  House,
+}
+
+enum UnitEnum {
+  Item,
+  Kilogram,
+  Liter,
 }
